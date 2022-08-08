@@ -3,6 +3,10 @@ package com.ll.exam.sbb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -53,6 +57,15 @@ public class MainController {
                 """.formatted(a + b);
     }
 
+    @GetMapping("/plus2")
+    @ResponseBody
+    public void showPlus2(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int a = Integer.parseInt(req.getParameter("a"));
+        int b = Integer.parseInt(req.getParameter("b"));
+
+        resp.getWriter().append(a + b + "");
+    }
+
     @GetMapping("/minus")
     @ResponseBody
     public String showMinus(@RequestParam(defaultValue = "0") int a, int b) {
@@ -78,18 +91,39 @@ public class MainController {
                 .collect(Collectors.joining("<br>\n"));
     }
 
-    @GetMapping("/mbti")
+    @GetMapping("/mbti/{name}")
     @ResponseBody
-    public String showMbti(@RequestParam(defaultValue = "권재순") String name) {
-        if (name == "홍길동") {
-            return "INFP";
-        } else if (name == "홍길순") {
-            return "ENFP";
-        } else if (name == "임꺽정") {
-            return "INFJ";
-        } else if (name == "권재순") {
-            return "ESFJ";
-        }
-        return "";
+    public String showMbti(@PathVariable String name) {
+        return switch (name) {
+            case "홍길동" -> "INFP";
+            case "홍길순" -> "INFJ";
+            case "임꺽정" -> "ENFP";
+            case "권재순" -> "ESFJ";
+            default -> "모름";
+        };
+    }
+
+    @GetMapping("/saveSessionAge/{age}")
+    @ResponseBody
+    public String saveSession(@PathVariable int age, HttpServletRequest req) {
+        // req 안에 쿠키가 있기 때문에 선언 => JSESSIONID => 세션을 얻는다.
+        HttpSession session = req.getSession();
+
+        session.setAttribute("age", age);
+
+        return """
+                <h1>세션 저장 완료!</h1>
+                """;
+    }
+
+    @GetMapping("/getSessionAge")
+    @ResponseBody
+    public String showSession(HttpSession session) {
+        int age = (int)session.getAttribute("age");
+
+        return """
+                <h1>저장한 나이</h1>
+                <span>%d</span>
+                """.formatted(age);
     }
 }
