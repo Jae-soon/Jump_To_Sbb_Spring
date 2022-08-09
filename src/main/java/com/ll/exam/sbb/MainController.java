@@ -3,6 +3,7 @@ package com.ll.exam.sbb;
 import com.ll.exam.sbb.article.dto.ArticleDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -213,15 +214,24 @@ public class MainController {
                 <h1>id : %d / name = %s / age = %d</h1>
                 """.formatted(p.getId(), p.getName(), p.getAge());
     }
+
+    @GetMapping("/addPerson2/{id}")
+    @ResponseBody
+    public Person addPerson2(Person p) {
+        return p;
+    }
 }
-
-
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 class Person {
     private int id;
     private int age;
     private String name;
 
+    public Person(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
 }
