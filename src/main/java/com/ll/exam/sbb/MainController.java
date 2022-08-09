@@ -1,5 +1,6 @@
 package com.ll.exam.sbb;
 
+import com.ll.exam.sbb.article.dto.ArticleDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,12 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
 public class MainController {
     private int increaseNumber = -1;
+
     @RequestMapping("/sbb") // GET POST 둘 다 Mapping 가능
     @ResponseBody
     public String index() {
@@ -119,11 +124,79 @@ public class MainController {
     @GetMapping("/getSessionAge")
     @ResponseBody
     public String showSession(HttpSession session) {
-        int age = (int)session.getAttribute("age");
+        int age = (int) session.getAttribute("age");
 
         return """
                 <h1>저장한 나이</h1>
                 <span>%d</span>
                 """.formatted(age);
+    }
+
+    private List<ArticleDto> articles = new ArrayList<>(
+            Arrays.asList(
+                    new ArticleDto("제목", "내용"),
+                    new ArticleDto("제목", "내용"))
+    );
+
+    @GetMapping("/addArticle")
+    @ResponseBody
+    public String addArticle(String title, String body) {
+        ArticleDto articleDto = new ArticleDto(title, body);
+
+        articles.add(articleDto);
+
+
+        return """
+                <h1>%d번 글이 등록되었습니다!</h1>
+                """.formatted(articleDto.getId());
+    }
+
+    @GetMapping("/article/{id}")
+    @ResponseBody
+    public ArticleDto getArticleById(@PathVariable int id) {
+        ArticleDto articleDto = articles.stream().filter(a -> a.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        return articleDto;
+    }
+
+    @GetMapping("/modifyArticle/{id}")
+    @ResponseBody
+    public String modifyArticle(@PathVariable int id, String title, String body) {
+        ArticleDto articleDto = articles
+                .stream()
+                .filter(a -> a.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (articleDto == null) {
+            return "%d번 글은 존재하지 않는다.".formatted(id);
+        }
+
+        articleDto.setTitle(title);
+        articleDto.setBody(body);
+
+        return """
+                <h1>%d번 글이 수정되었습니다!</h1>
+                """.formatted(articleDto.getId());
+    }
+
+    @GetMapping("/deleteArticle/{id}")
+    @ResponseBody
+    public String deleteArticle(@PathVariable int id) {
+        ArticleDto articleDto = articles
+                .stream()
+                .filter(a -> a.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (articleDto.getId() == id) {
+            articles.remove(articleDto);
+        }
+
+        return """
+                <h1>%d번 글이 삭제되었습니다!
+                """.formatted(id);
     }
 }
