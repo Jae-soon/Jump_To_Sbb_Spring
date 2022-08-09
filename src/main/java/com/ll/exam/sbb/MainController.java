@@ -1,6 +1,8 @@
 package com.ll.exam.sbb;
 
 import com.ll.exam.sbb.article.dto.ArticleDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -199,4 +201,27 @@ public class MainController {
                 <h1>%d번 글이 삭제되었습니다!
                 """.formatted(id);
     }
+
+    List<Person> people = new ArrayList<>();
+
+    @GetMapping("/addPerson")
+    @ResponseBody
+    public String addPerson(@ModelAttribute Person p) {
+        people.add(p);
+
+        return """
+                <h1>id : %d / name = %s / age = %d</h1>
+                """.formatted(p.getId(), p.getName(), p.getAge());
+    }
+}
+
+
+
+@Data
+@AllArgsConstructor
+class Person {
+    private int id;
+    private int age;
+    private String name;
+
 }
