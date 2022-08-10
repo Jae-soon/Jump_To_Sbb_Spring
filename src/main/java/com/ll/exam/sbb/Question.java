@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 // 아래 클래스와 1:1로 매칭되는 테이블이 DB에 존재하지 않는다면 자동 생성
 @Entity
 public class Question {
-    @Id
+    @Id // PK 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Integer id;
 
