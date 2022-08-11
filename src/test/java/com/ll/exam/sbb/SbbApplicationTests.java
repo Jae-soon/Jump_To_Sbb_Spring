@@ -1,5 +1,6 @@
 package com.ll.exam.sbb;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,33 +24,14 @@ class SbbApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
-//	@BeforeEach
-//	void beforeEach() {
-//		deleteTable();
-//		makeTestData();
-//	}
-	@Test
-	void truncateTable() {
-		questionRepository.foreignOff();
-		questionRepository.truncateQuestion();
+
+	@BeforeEach
+	void beforeEach() {
+		truncateTable();
+		makeTestData();
 	}
 
-//	private void makeTestData() {
-//		Question q1 = new Question();
-//		q1.setSubject("sbb가 무엇인가요?");
-//		q1.setContent("sbb에 대해서 알고 싶습니다.");
-//		q1.setCreateDate(LocalDateTime.now());
-//		this.questionRepository.save(q1);  // 첫번째 질문 저장
-//
-//		Question q2 = new Question();
-//		q2.setSubject("스프링부트 모델 질문입니다.");
-//		q2.setContent("id는 자동으로 생성되나요?");
-//		q2.setCreateDate(LocalDateTime.now());
-//		this.questionRepository.save(q2);  // 두번째 질문 저장
-//	}
-
-	@Test
-	void testJpa() {
+	void makeTestData() {
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
@@ -62,9 +44,38 @@ class SbbApplicationTests {
 		q2.setCreateDate(LocalDateTime.now());
 		this.questionRepository.save(q2);  // 두번째 질문 저장
 
-		assertThat(q1.getId()).isGreaterThan(0);
-		assertThat(q2.getId()).isGreaterThan(q1.getId());
+		Optional<Question> oq = this.questionRepository.findById(2);
+		assertTrue(oq.isPresent());
+		Question q = oq.get();
+
+		Answer a = new Answer();
+		a.setContent("네 자동으로 생성됩니다.");
+		a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a.setCreateDate(LocalDateTime.now());
+		this.answerRepository.save(a);
 	}
+
+	void truncateTable() {
+		questionRepository.truncateTable();
+	}
+
+//	@Test
+//	void testJpa() {
+//		Question q1 = new Question();
+//		q1.setSubject("sbb가 무엇인가요?");
+//		q1.setContent("sbb에 대해서 알고 싶습니다.");
+//		q1.setCreateDate(LocalDateTime.now());
+//		this.questionRepository.save(q1);  // 첫번째 질문 저장
+//
+//		Question q2 = new Question();
+//		q2.setSubject("스프링부트 모델 질문입니다.");
+//		q2.setContent("id는 자동으로 생성되나요?");
+//		q2.setCreateDate(LocalDateTime.now());
+//		this.questionRepository.save(q2);  // 두번째 질문 저장
+//
+//		assertThat(q1.getId()).isGreaterThan(0);
+//		assertThat(q2.getId()).isGreaterThan(q1.getId());
+//	}
 
 	@Test
 	void testJpa2() {
@@ -145,18 +156,18 @@ class SbbApplicationTests {
 		assertEquals(2, a.getQuestion().getId());
 	}
 
-	@Transactional
-	@Test
-	void testJpa11() {
-		Optional<Question> oq = this.questionRepository.findById(2);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
-
-		List<Answer> answerList = q.getAnswerList();
-
-		assertEquals(1, answerList.size());
-		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
-	}
+//	@Transactional
+//	@Test
+//	void testJpa11() {
+//		Optional<Question> oq = this.questionRepository.findById(2);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//
+//		List<Answer> answerList = q.getAnswerList();
+//
+//		assertEquals(1, answerList.size());
+//		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+//	}
 
 	@Test
 	void contextLoads() {
