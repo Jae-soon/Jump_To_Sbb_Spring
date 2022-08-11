@@ -25,14 +25,15 @@ class SbbApplicationTests {
 
 //	@BeforeEach
 //	void beforeEach() {
-//
+//		deleteTable();
 //		makeTestData();
 //	}
-//
-//	private void deleteTable() {
-//
-//	}
-//
+	@Test
+	void truncateTable() {
+		questionRepository.foreignOff();
+		questionRepository.truncateQuestion();
+	}
+
 //	private void makeTestData() {
 //		Question q1 = new Question();
 //		q1.setSubject("sbb가 무엇인가요?");
