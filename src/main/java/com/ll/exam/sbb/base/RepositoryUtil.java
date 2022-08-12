@@ -16,9 +16,9 @@ public interface RepositoryUtil {
     void foreignOn();
 
     default void truncateTable() {
-        foreignOff();
+        //foreignOff();
         truncate();
-        foreignOn();
+        //foreignOn();
     }
 
     void truncate();
