@@ -42,7 +42,6 @@ public class AnswerRepositoryTest {
         // a1.setQuestion(q);
         a1.setCreateDate(LocalDateTime.now());
         q.addAnswer(a1);
-        answerRepository.save(a1);
         // q.getAnswerList().add(a1);
 
         Answer a2 = new Answer();
@@ -50,10 +49,9 @@ public class AnswerRepositoryTest {
         // a2.setQuestion(q);
         a2.setCreateDate(LocalDateTime.now());
         q.addAnswer(a2);
-        answerRepository.save(a2);
         // q.getAnswerList().add(a2);
 
-        questionRepository.save(q);
+        questionRepository.save(q); // 한번에 Answer까지 저장된다.
     }
 
     @Test
@@ -66,7 +64,8 @@ public class AnswerRepositoryTest {
         a.setContent("네 자동으로 생성됩니다.");
         a.setCreateDate(LocalDateTime.now());
         q.addAnswer(a);
-        answerRepository.save(a);
+
+        questionRepository.save(q); // answer도 한번에 저장된다.
     }
 
     @Test
