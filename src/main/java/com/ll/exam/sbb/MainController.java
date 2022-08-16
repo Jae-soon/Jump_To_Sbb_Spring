@@ -27,6 +27,11 @@ public class MainController {
         return "안녕하세요. ㅎㅇㅎㅇ^^.";
     }
 
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:/question/list";
+    }
+
     @GetMapping("/page1")
     @ResponseBody
     public String showPage1() {
