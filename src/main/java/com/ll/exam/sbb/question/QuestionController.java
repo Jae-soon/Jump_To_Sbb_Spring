@@ -2,6 +2,7 @@ package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.answer.AnswerForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,11 +19,9 @@ public class QuestionController {
 
     @RequestMapping("/list")
     // @ResponseBody 어노테이션이 없으면 resources/question_list/question_list.html 파일을 보여준다.
-    public String list(Model model) {
-        List<Question> questionList = this.questionService.getList();
-
-        // 실행될 question_list.html에서
-        model.addAttribute("questionList", questionList);
+    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
 
         return "question_list";
     }
