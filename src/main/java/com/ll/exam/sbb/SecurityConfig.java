@@ -31,8 +31,10 @@ public class SecurityConfig {
     }
 
     // 스프링 시스템에 객체 등록
+    // @Bean은 스프링이 관리하는 객체를 의미한다.
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() { // PasswordEncoder 객체가 필요할 경우 passwordEncoder 메서드를 호출한다.
+
         return new BCryptPasswordEncoder();
     }
 }
