@@ -4,7 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 // Security 설정
 @Configuration
@@ -14,10 +17,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // 모든 경로
-                .antMatchers("/question/list")
+                .antMatchers("/**")
                 // 허용
                 .permitAll()
-                .and()
+                .and() // 문맥의 끝
                 .csrf().ignoringAntMatchers("/h2-console/**")
                 .and()
                 .headers()
@@ -25,5 +28,11 @@ public class SecurityConfig {
                         XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
         ;
         return http.build();
+    }
+
+    // 스프링 시스템에 객체 등록
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
