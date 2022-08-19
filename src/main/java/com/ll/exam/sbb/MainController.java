@@ -29,7 +29,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String root() {
-        return "redirect:/question/list";
+        return "forward:/question/list";
     }
 
     @GetMapping("/page1")
