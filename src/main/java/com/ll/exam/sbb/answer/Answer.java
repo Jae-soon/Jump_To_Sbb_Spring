@@ -2,6 +2,7 @@ package com.ll.exam.sbb.answer;
 
 
 import com.ll.exam.sbb.question.Question;
+import com.ll.exam.sbb.user.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,4 +25,7 @@ public class Answer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Question question;
+
+    @ManyToOne
+    private SiteUser author;
 }

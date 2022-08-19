@@ -1,6 +1,7 @@
 package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.answer.Answer;
+import com.ll.exam.sbb.user.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +30,9 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL}) // PERSIST : 관련된 내용들이 저장될때 함께 저장한다.
     private List<Answer> answerList = new ArrayList<>();
+
+    @ManyToOne
+    private SiteUser author;
 
     public void addAnswer(Answer answer) {
         answer.setQuestion(this); // 해당하는 Answer의 Question부분에 이 Question 객체를 저장한다.
