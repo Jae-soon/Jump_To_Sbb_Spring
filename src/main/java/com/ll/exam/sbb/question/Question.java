@@ -34,6 +34,8 @@ public class Question {
     @ManyToOne
     private SiteUser author;
 
+    private LocalDateTime modifyDate;
+
     public void addAnswer(Answer answer) {
         answer.setQuestion(this); // 해당하는 Answer의 Question부분에 이 Question 객체를 저장한다.
         getAnswerList().add(answer);
