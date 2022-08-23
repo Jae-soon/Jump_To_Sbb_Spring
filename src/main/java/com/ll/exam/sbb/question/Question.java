@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,6 +36,9 @@ public class Question {
     private SiteUser author;
 
     private LocalDateTime modifyDate;
+
+    @ManyToMany
+    Set<SiteUser> voter;
 
     public void addAnswer(Answer answer) {
         answer.setQuestion(this); // 해당하는 Answer의 Question부분에 이 Question 객체를 저장한다.
