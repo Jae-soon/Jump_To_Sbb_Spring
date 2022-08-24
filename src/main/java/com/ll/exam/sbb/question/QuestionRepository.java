@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer>, RepositoryUtil {
     Question findBySubject(String subject);
+    Question findByContent(String content);
     Question findBySubjectAndContent(String subject, String content);
     List<Question> findBySubjectLike(String subject);
     Page<Question> findAll(Pageable pageable);
@@ -20,4 +21,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Re
     @Modifying
     @Query(value = "ALTER TABLE question AUTO_INCREMENT = 1", nativeQuery = true)
     void truncate();
+
+    Page<Question> findBySubjectContains(String kw, Pageable pageable);
 }
