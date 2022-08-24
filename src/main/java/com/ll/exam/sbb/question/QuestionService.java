@@ -42,7 +42,7 @@ public class QuestionService {
             return questionRepository.findAll(pageable);
         }
 
-        return questionRepository.findBySubjectContains(kw, pageable);
+        return questionRepository.findBySubjectContainsOrContentContains(kw, kw, pageable);
     }
 
     public Question getQuestion(int id) {

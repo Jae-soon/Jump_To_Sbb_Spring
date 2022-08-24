@@ -23,4 +23,5 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Re
     void truncate();
 
     Page<Question> findBySubjectContains(String kw, Pageable pageable);
+    Page<Question> findBySubjectContainsOrContentContains(String kw, String kw_, Pageable pageable);
 }
