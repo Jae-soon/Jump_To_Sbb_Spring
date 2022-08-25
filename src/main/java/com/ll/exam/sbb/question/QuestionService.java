@@ -34,9 +34,14 @@ public class QuestionService {
         return this.questionRepository.findAll(pageable);
     }
 
-    public Page<Question> getList(String kw, int page) {
+    public Page<Question> getList(String sortCode, String kw, int page) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        if (sortCode.equals("recent")) {
+            sorts.add(Sort.Order.desc("createDate"));
+        } else {
+            sorts.add(Sort.Order.asc("createDate"));
+        }
+
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         if ( kw == null || kw.trim().length() == 0 ) {
             return questionRepository.findAll(pageable);

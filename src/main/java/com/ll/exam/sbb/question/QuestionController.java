@@ -26,9 +26,11 @@ public class QuestionController {
 
     @RequestMapping("/list")
     // @ResponseBody 어노테이션이 없으면 resources/question_list/question_list.html 파일을 보여준다.
-    public String list(String kw, Model model, @RequestParam(value="page", defaultValue="0") int page) {
-        Page<Question> paging = this.questionService.getList(kw, page);
+    public String list(@RequestParam(defaultValue = "") String sortCode, @RequestParam(value="kw", defaultValue = "") String kw, Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Question> paging = this.questionService.getList(sortCode, kw, page);
         model.addAttribute("paging", paging);
+        model.addAttribute("kw", kw);
+        model.addAttribute("sortCode", sortCode);
 
         return "question_list";
     }
